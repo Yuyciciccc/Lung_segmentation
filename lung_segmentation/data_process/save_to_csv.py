@@ -76,8 +76,8 @@ def save_file2_csv(file_dir, file_name):
     # 打开CSV文件，准备写入数据
     out=open(file_name,'w')
     # 定义图像和掩膜的文件夹名称
-    image="2d_images"
-    mask="2d_masks"
+    image="2d_png_resize_images"
+    mask="2d_png_resize_masks"
     # 构建图像和掩膜的完整路径
     file_image_dir=(file_dir+'/'+image)
     file_mask_dir=(file_dir+'/'+mask)
@@ -96,8 +96,8 @@ def save_file2_csv(file_dir, file_name):
 
 def dataprocess(data_dir):    
     
-    image_dir=data_dir+"/2d_images"
-    mask_dir=data_dir+"/2d_masks"
+    image_dir=data_dir+"/2d_png_resize_images"
+    mask_dir=data_dir+"/2d_png_resize_masks"
 
     save_file2_csv(data_dir,r'data/data.csv')
     #   file_name_path只返回文件名
@@ -107,13 +107,12 @@ def dataprocess(data_dir):
     #   图像和标签文件名需一致
     mask_files=[os.path.join(mask_dir, os.path.basename(image)) for image in image_files]
     #   分割训练集和测试集
-    train_csv=r'data/train.csv'
-    test_csv=r'data/test.csv'
+    train_csv=r'data/BCDU_train.csv'
+    test_csv=r'data/BCDU_test.csv'
     split_and_save_to_csv(image_dir,mask_dir,train_csv,test_csv,split_ratio=0.8)
 
-
-
-
+if __name__=='__main__':
+    dataprocess(r'G:\06_CodeData\Database\Lung segmentation')
 
 
 

@@ -12,7 +12,7 @@ class MyDataset(Dataset):
 
     def __len__(self):
         return len(self.data_info) 
-#todo 添加filename
+
     def __getitem__(self, index):
         image_path = os.path.join(self.data_info.iloc[index, 0])
         mask_path = os.path.join(self.data_info.iloc[index, 1])
@@ -24,8 +24,14 @@ class MyDataset(Dataset):
         image = self.transform(image)
         mask = self.transform(mask)
         # print(f"Image type: {type(image)}, Mask type: {type(mask)}")
-        return {'image': image, 'mask': mask}
+        
+        # 使用 os.path.splitext 分割文件名和扩展名
+        file_name, _ = os.path.splitext(os.path.basename(image_path))
+        # 再次使用 os.path.splitext 分割文件名和 ".gz" 扩展名
+        file_name, _ = os.path.splitext(file_name)
 
+        return {'image': image, 'mask': mask, 'file_name': file_name}  # 添加文件名到返回字典中
+    
     def getdata(self):
         data = pd.read_csv(self.csv_file)
         images = [self.transform(Image.open(os.path.join(img)).convert('RGB')) for img in data['Image']]
